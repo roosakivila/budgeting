@@ -1,8 +1,9 @@
-import React from "react";
+
 import IncomeForm from "./components/IncomeForm";
-import { Container, CssBaseline, Typography, Stack } from "@mui/material";
+import { Container, CssBaseline, Stack } from "@mui/material";
 import ExpenseForm from "./components/ExpenseForm";
-import ExpensePieChart from "./components/Charts/ExpensePieChart";
+import Navbar from "./components/Navbar";
+
 
 
 
@@ -10,9 +11,9 @@ const App = () => {
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: 4, mt: 4 }}>
         <Stack spacing={4}>
-          <Typography variant="h3" component="h1">Budgeting App</Typography>
+          <Navbar />
           <IncomeForm />
           <ExpenseForm />
 

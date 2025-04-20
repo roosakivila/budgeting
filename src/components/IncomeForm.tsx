@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, CssBaseline, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography, Container } from "@mui/material";
 
 const IncomeForm = () => {
     const [income, setIncome] = useState<string>("");
@@ -27,42 +27,62 @@ const IncomeForm = () => {
 
     const isButtonDisabled = income === "" || isNaN(parseFloat(income)) || parseFloat(income) <= 0;
 
+    const resetSubmit = () => {
+        setSubmittedIncome(0);
+    }
+
     // lisää toiminto, että tuloja voi lisätä sekä tulojen resetointi painike
 
     return (
         <>
+            <Container>
+                <Typography variant="h5" sx={{ textTransform: 'uppercase' }}>Fuel your wallet</Typography>
+                <Box padding={2}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2
+                    }}>
+                        <TextField
+                            label="Add income"
+                            type="number"
+                            value={income}
+                            onChange={handleIncomeChange}
+                            onFocus={handleFocus}
+                            variant="outlined"
+                            size="medium"
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                            onClick={handleSubmit}
+                            disabled={isButtonDisabled}
+                            sx={{ height: '56px' }}
+                        >
+                            Add
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                            onClick={resetSubmit}
+                            sx={{ height: '56px' }}
+                        >
+                            Reset
+                        </Button>
+                        {submittedIncome !== null && (
+                            <Box sx={{ textAlign: 'center', ml: 10 }}>
+                                <Typography variant="body1" sx={{ textTransform: 'uppercase' }}>Total income:</Typography> {/* The label */}
+                                <Typography variant="h4" sx={{ color: 'green' }}>
+                                    +{submittedIncome.toFixed(2)} {/* Display the submitted income */}
+                                </Typography>
+                            </Box>
+                        )}
+                    </Box>
 
-            <Box padding={2}>
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2
-                }}>
-                    <TextField
-                        label="Add income"
-                        type="number"
-                        value={income}
-                        onChange={handleIncomeChange}
-                        onFocus={handleFocus}
-                        variant="outlined"
-                        size="medium"
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="medium"
-                        onClick={handleSubmit}
-                        disabled={isButtonDisabled}
-                        sx={{ height: '56px' }}
-                    >
-                        Add
-                    </Button>
-                    {submittedIncome !== null && (
-                        <p>Income: {submittedIncome}</p>
-                    )}
                 </Box>
-
-            </Box>
+            </Container>
         </>
     )
 };
