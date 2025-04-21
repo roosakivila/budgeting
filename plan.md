@@ -66,17 +66,18 @@ A simple, user-friendly web-based budgeting app built with React and TypeScript.
 ### 📍 Phase 2: State Management & Budget Logic
 **Goal:** Store and manage app state for budgets, incomes, and expenses.
 
-- [ ] Create a context or global state for all finances
-- [ ] Implement logic to track category totals
+- [x] Create a context or global state for all finances
+- [x] Implement logic to track category totals
 - [ ] Implement budget limit logic
   - [ ] Show warning if category budget is exceeded
 - [ ] Optional: Ability to remove/edit expenses
+- [ ] Expenses in ag-grid
 
 ### 📍 Phase 3: Charts & Analytics
 **Goal:** Add chart visualizations to make data easy to understand.
 
-- [ ] Install and set up Recharts or Chart.js
-- [ ] Build pie chart for category spending breakdown
+- [x] Install and set up Recharts or Chart.js
+- [x] Build pie chart for category spending breakdown
 - [ ] Build bar chart comparing income vs expenses
 - [ ] Optional: Line chart to show spending over time
 - [ ] Make chart components reusable and dynamic

@@ -1,7 +1,8 @@
 
-import { Button, Box, FormControl, InputLabel, MenuItem, Select, TextField, SelectChangeEvent, Typography } from "@mui/material";
+import { Button, Box, FormControl, InputLabel, MenuItem, Select, TextField, SelectChangeEvent, Typography, Container } from "@mui/material";
 import { useState } from "react"
 import ExpensePieChart from "./Charts/ExpensePieChart";
+import ExpenseTable from "./ExpenseTable";
 
 
 const ExpenseForm = () => {
@@ -46,75 +47,69 @@ const ExpenseForm = () => {
     const expenseTotals: number = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
 
-
-
     const isButtonDisabled = expenseAmout === "" || isNaN(parseFloat(expenseAmout)) || parseFloat(expenseAmout) <= 0 || expenseCategory === "";
 
 
     return (
         <>
-            <ExpensePieChart expenses={expenses} />
-            <Box paddingLeft={2}>
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2
-                }}>
-                    <TextField
-                        label="Expense amount"
-                        type="number"
-                        value={expenseAmout}
-                        onChange={handleExpenceAmount}
-                        variant="outlined"
-                        size="medium"
-                    />
-                    <FormControl variant="outlined" sx={{ minWidth: 220 }}>
-                        <InputLabel>Category</InputLabel>
-                        <Select
-                            value={expenseCategory}
-                            onChange={handleCategoryChange}
-                            label="Select category"
+            <Container>
+                <Typography variant="h5" sx={{ textTransform: 'uppercase' }}>Expenses</Typography>
+                <ExpensePieChart expenses={expenses} />
+                <Box paddingLeft={2}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2
+                    }}>
+                        <TextField
+                            label="Expense amount"
+                            type="number"
+                            value={expenseAmout}
+                            onChange={handleExpenceAmount}
+                            variant="outlined"
+                            size="medium"
+                        />
+                        <FormControl variant="outlined" sx={{ minWidth: 220 }}>
+                            <InputLabel>Category</InputLabel>
+                            <Select
+                                value={expenseCategory}
+                                onChange={handleCategoryChange}
+                                label="Select category"
+                            >
+                                {categories.map((category) => (
+                                    <MenuItem key={category} value={category}>
+                                        {category}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                            onClick={handleAddExpense}
+                            disabled={isButtonDisabled}
+                            sx={{ height: '56px' }}
                         >
-                            {categories.map((category) => (
-                                <MenuItem key={category} value={category}>
-                                    {category}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="medium"
-                        onClick={handleAddExpense}
-                        disabled={isButtonDisabled}
-                        sx={{ height: '56px' }}
-                    >
-                        Add
-                    </Button>
-                </Box>
-                <Typography variant="h6" sx={{ marginTop: 2 }}>Expenses:</Typography>
-                <Typography variant="h6" sx={{ marginTop: 2 }}>
-                    Total Expenses: {expenseTotals.toFixed(2)}
-                </Typography>
-                {expenses.length > 0 && (
-                    <Box sx={{ marginTop: 2 }}>
-                        {expenses.map((expense, index) => (
-                            <Typography key={index}>
-                                {expense.category}: {expense.amount.toFixed(2)}
-                            </Typography>
-                        ))}
+                            Add
+                        </Button>
                     </Box>
-                )}
 
-                <Typography variant="h6" sx={{ marginTop: 2 }}>Category Totals:</Typography>
-                {expenses.length > 0 && (categories.map((category) => (
-                    <Typography key={category}>
-                        {category}: {categoryTotals[category].toFixed(2)}
+                    <Typography variant="h6" sx={{ marginTop: 2 }}>
+                        Total Expenses: {expenseTotals.toFixed(2)}
                     </Typography>
-                )))}
 
-            </Box>
+
+                    <Typography variant="h6" sx={{ marginTop: 2 }}>Category Totals:</Typography>
+                    {expenses.length > 0 && (categories.map((category) => (
+                        <Typography key={category}>
+                            {category}: {categoryTotals[category].toFixed(2)}
+                        </Typography>
+                    )))}
+
+                </Box>
+            </Container>
+            <ExpenseTable expenses={expenses} />
 
         </>
 
