@@ -1,19 +1,13 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-
-interface Expense {
-    amount: number;
-    category: string;
-}
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { Expense } from "../../context/FinanceContext";
 
 interface ExpensePieChartProps {
     expenses: Expense[];
 }
 
 const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses }) => {
-    // chart logic will go here
-
     const categories = [...new Set(expenses.map(expense => expense.category))];
 
     const totals = categories.reduce((acc, category) => {
@@ -28,7 +22,7 @@ const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses }) => {
         value: total,
     }));
 
-    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"];
 
     if (categoryTotals.length === 0) {
         return <Typography variant="body1" padding={2}>No expenses to display yet.</Typography>;
@@ -55,7 +49,6 @@ const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses }) => {
             </PieChart>
         </ResponsiveContainer>
     );
-
 };
 
 export default ExpensePieChart;
