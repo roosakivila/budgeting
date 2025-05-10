@@ -1,144 +1,148 @@
-import { useState, useEffect } from "react";
-import { Box, Button, TextField, Typography, Container, Alert, Snackbar, Paper } from "@mui/material";
+import { useState } from "react";
+import { 
+  Box, 
+  Typography, 
+  TextField, 
+  Button, 
+  Card, 
+  InputAdornment,
+  IconButton,
+  Tooltip,
+  Fade,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Divider
+} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useFinance } from "../context/FinanceContext";
 
 const IncomeForm = () => {
-    const [income, setIncome] = useState<string>("");
-    const { state, setIncome: setGlobalIncome, resetIncome } = useFinance();
-    const [error, setError] = useState<string>("");
-    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-    const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const [income, setIncome] = useState<string>('');
+  const [incomeSource, setIncomeSource] = useState<string>('Salary');
+  const { state, setIncome: setGlobalIncome, resetIncome } = useFinance();
 
-    const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setIncome(value);
-        
-        // Clear error when user starts typing
-        if (error) setError("");
-    };
+  const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIncome(e.target.value);
+  };
 
-    const validateIncome = (value: string): boolean => {
-        const incomeValue = parseFloat(value);
-        
-        if (value.trim() === "") {
-            setError("Income amount is required");
-            return false;
-        }
-        
-        if (isNaN(incomeValue)) {
-            setError("Please enter a valid number");
-            return false;
-        }
-        
-        if (incomeValue <= 0) {
-            setError("Income must be greater than zero");
-            return false;
-        }
-        
-        return true;
-    };
+  const handleIncomeSubmit = () => {
+    if (income && !isNaN(parseFloat(income))) {
+      setGlobalIncome(parseFloat(income));
+      setIncome('');
+    }
+  };
 
-    const handleSubmit = () => {
-        if (validateIncome(income)) {
-            const incomeValue = parseFloat(income);
-            setGlobalIncome(incomeValue);
-            setIncome("");
-            setSnackbarMessage(`Income of ${incomeValue.toFixed(2)} added successfully!`);
-            setSnackbarOpen(true);
-        }
-    };
+  const handleReset = () => {
+    resetIncome();
+    setIncome('');
+  };
 
-    const handleResetIncome = () => {
-        resetIncome();
-        setSnackbarMessage("Income has been reset");
-        setSnackbarOpen(true);
-    };
+  return (
+    <Card 
+      elevation={3} 
+      sx={{ 
+        p: 3, 
+        borderRadius: 2,
+        position: 'relative',
+        height: '100%'
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600 }}>
+          ADD INCOME
+        </Typography>
+        <Tooltip 
+          title="Add your regular income sources here. This helps calculate your savings and budget." 
+          placement="top"
+          TransitionComponent={Fade}
+          arrow
+        >
+          <IconButton size="small">
+            <InfoOutlinedIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Box>
 
-    const handleFocus = () => {
-        if (income === "0") {
-            setIncome("");
-        }
-    };
+      <Divider sx={{ mb: 3 }} />
 
-    const handleCloseSnackbar = () => {
-        setSnackbarOpen(false);
-    };
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <FormControl fullWidth>
+          <InputLabel id="income-source-label">Source</InputLabel>
+          <Select
+            labelId="income-source-label"
+            value={incomeSource}
+            label="Source"
+            onChange={(e) => setIncomeSource(e.target.value as string)}
+          >
+            <MenuItem value="Salary">Salary</MenuItem>
+            <MenuItem value="Freelance">Freelance</MenuItem>
+            <MenuItem value="Investments">Investments</MenuItem>
+            <MenuItem value="Other">Other</MenuItem>
+          </Select>
+        </FormControl>
 
-    const isButtonDisabled = income === "" || isNaN(parseFloat(income)) || parseFloat(income) <= 0;
+        <TextField
+          label="Income Amount"
+          variant="outlined"
+          fullWidth
+          value={income}
+          onChange={handleIncomeChange}
+          type="number"
+          placeholder="Enter amount"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
+          sx={{ mb: 2 }}
+        />
 
-    return (
-        <Paper elevation={2} sx={{ p: 3 }}>
-            <Typography variant="h5" sx={{ textTransform: 'uppercase', mb: 2 }}>Fuel your wallet</Typography>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'stretch', sm: 'center' },
-                gap: 2
-            }}>
-                <TextField
-                    label="Add income"
-                    type="number"
-                    value={income}
-                    onChange={handleIncomeChange}
-                    onFocus={handleFocus}
-                    variant="outlined"
-                    size="medium"
-                    fullWidth
-                    error={!!error}
-                    helperText={error}
-                />
-                <Box sx={{ display: 'flex', gap: 1, mt: { xs: 1, sm: 0 } }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="medium"
-                        onClick={handleSubmit}
-                        disabled={isButtonDisabled}
-                        sx={{ height: '56px', flex: 1 }}
-                    >
-                        Add
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        size="medium"
-                        onClick={handleResetIncome}
-                        sx={{ height: '56px', flex: 1 }}
-                    >
-                        Reset
-                    </Button>
-                </Box>
-            </Box>
-            
-            {state.income > 0 && (
-                <Box sx={{ 
-                    textAlign: 'center',
-                    mt: 3, 
-                    p: 2, 
-                    bgcolor: 'success.light', 
-                    borderRadius: 1 
-                }}>
-                    <Typography variant="body1" sx={{ textTransform: 'uppercase', color: 'success.contrastText' }}>
-                        Total income:
-                    </Typography>
-                    <Typography variant="h4" sx={{ color: 'success.contrastText' }}>
-                        +{state.income.toFixed(2)}
-                    </Typography>
-                </Box>
-            )}
-            
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={4000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
-        </Paper>
-    );
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleIncomeSubmit}
+            disabled={!income || isNaN(parseFloat(income)) || parseFloat(income) <= 0}
+            startIcon={<AddIcon />}
+            sx={{ py: 1.5 }}
+          >
+            Add Income
+          </Button>
+          
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleReset}
+            startIcon={<RestartAltIcon />}
+            sx={{ py: 1.5 }}
+          >
+            Reset
+          </Button>
+        </Box>
+      </Box>
+
+      <Box 
+        sx={{ 
+          mt: 4, 
+          p: 2, 
+          bgcolor: 'success.light', 
+          borderRadius: 2, 
+          textAlign: 'center',
+          color: 'success.contrastText'
+        }}
+      >
+        <Typography variant="subtitle2" gutterBottom>
+          TOTAL INCOME
+        </Typography>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          +${state.income.toFixed(2)}
+        </Typography>
+      </Box>
+    </Card>
+  );
 };
 
 export default IncomeForm; 

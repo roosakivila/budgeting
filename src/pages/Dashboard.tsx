@@ -1,92 +1,42 @@
 import React from 'react';
-import { Container, Paper, Typography, Divider, Box, Grid as MuiGrid } from '@mui/material';
+import { Container, Typography, Divider, Box } from '@mui/material';
 import IncomeForm from '../components/IncomeForm';
 import IncomeVsExpense from '../components/Charts/IncomeVsExpense';
+import SummaryCards from '../components/SummaryCards';
+import { FadeIn, SlideUp } from '../components/AnimatedTransition';
 import { useFinance } from '../context/FinanceContext';
 
 const Dashboard: React.FC = () => {
-  const { state, totalExpenses, savings } = useFinance();
+  const { state } = useFinance();
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
-      <Typography variant="h4" component="h1" align="center" gutterBottom>
-        Dashboard
-      </Typography>
+      <FadeIn>
+        <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ mb: 4, fontWeight: 600 }}>
+          Dashboard
+        </Typography>
+      </FadeIn>
 
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
-        <Box sx={{ flex: 1 }}>
-          <IncomeForm />
+      <SlideUp delay={0.1}>
+        <SummaryCards />
+      </SlideUp>
+
+      <SlideUp delay={0.2}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
+          <Box sx={{ flex: 1 }}>
+            <IncomeForm />
+          </Box>
         </Box>
-        
-        <Box sx={{ flex: 1 }}>
-          <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
-            <Typography variant="h5" sx={{ textTransform: 'uppercase', mb: 2 }}>
-              Summary
-            </Typography>
-            
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-              <Box sx={{ 
-                flex: 1,
-                p: 2, 
-                bgcolor: 'success.light', 
-                borderRadius: 1, 
-                textAlign: 'center',
-              }}>
-                <Typography variant="body2" sx={{ textTransform: 'uppercase', color: 'success.contrastText' }}>
-                  Total Income
-                </Typography>
-                <Typography variant="h4" sx={{ color: 'success.contrastText' }}>
-                  {state.income.toFixed(2)}
-                </Typography>
-              </Box>
-              
-              <Box sx={{ 
-                flex: 1,
-                p: 2, 
-                bgcolor: 'error.light', 
-                borderRadius: 1, 
-                textAlign: 'center',
-              }}>
-                <Typography variant="body2" sx={{ textTransform: 'uppercase', color: 'error.contrastText' }}>
-                  Total Expenses
-                </Typography>
-                <Typography variant="h4" sx={{ color: 'error.contrastText' }}>
-                  {totalExpenses.toFixed(2)}
-                </Typography>
-              </Box>
-              
-              <Box sx={{ 
-                flex: 1,
-                p: 2, 
-                bgcolor: savings >= 0 ? 'info.light' : 'warning.light', 
-                borderRadius: 1, 
-                textAlign: 'center',
-              }}>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
-                    textTransform: 'uppercase', 
-                    color: savings >= 0 ? 'info.contrastText' : 'warning.contrastText' 
-                  }}
-                >
-                  {savings >= 0 ? 'Savings' : 'Deficit'}
-                </Typography>
-                <Typography 
-                  variant="h4" 
-                  sx={{ 
-                    color: savings >= 0 ? 'info.contrastText' : 'warning.contrastText' 
-                  }}
-                >
-                  {Math.abs(savings).toFixed(2)}
-                </Typography>
-              </Box>
-            </Box>
-          </Paper>
-        </Box>
-      </Box>
+      </SlideUp>
       
-      <Divider sx={{ my: 2 }} />
-      <IncomeVsExpense />
+      <Divider sx={{ my: 4 }} />
+      
+      <SlideUp delay={0.3}>
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>INCOME VS EXPENSES</Typography>
+          <IncomeVsExpense />
+        </Box>
+      </SlideUp>
     </Container>
   );
 };

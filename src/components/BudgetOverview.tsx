@@ -12,8 +12,10 @@ const BudgetOverview: React.FC = () => {
         const spent = categoryTotals[category] || 0;
         const percent = (spent / budget.limit) * 100;
 
-        if (percent >= 100) {
+        if (percent > 100) {
             return { color: 'error', progress: 100, text: 'Over budget' };
+        } else if (percent === 100) {
+            return { color: 'warning', progress: 100, text: 'Budget reached' };
         } else if (percent >= 80) {
             return { color: 'warning', progress: percent, text: 'Close to limit' };
         } else {
@@ -35,7 +37,7 @@ const BudgetOverview: React.FC = () => {
                         const status = getBudgetStatus(category);
 
                         return (
-                            <Grid item xs={12} sm={6} md={4} key={category}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={category}>
                                 <Paper sx={{ p: 2 }}>
                                     <Typography variant="h6">{category}</Typography>
                                     <Box sx={{ mt: 1 }}>
