@@ -29,7 +29,7 @@ const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses }) => {
     }
 
     return (
-        <ResponsiveContainer width="50%" height={250}>
+        <ResponsiveContainer width="60%" height={250}>
             <PieChart>
                 <Pie
                     data={categoryTotals}

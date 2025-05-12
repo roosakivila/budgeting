@@ -35,15 +35,15 @@ export const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
-      fontSize: '1.5rem',
+      fontSize: '1.7rem',
       fontWeight: 600,
     },
     h5: {
-      fontSize: '1.25rem',
+      fontSize: '1.4rem',
       fontWeight: 600,
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: '1.5rem',
       fontWeight: 600,
     },
     button: {
