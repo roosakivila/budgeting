@@ -7,7 +7,7 @@ import { FadeIn, SlideUp } from '../components/AnimatedTransition';
 import { useFinance } from '../context/FinanceContext';
 
 const Dashboard: React.FC = () => {
-  const { state } = useFinance();
+  const { state: _state } = useFinance();
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
@@ -28,9 +28,9 @@ const Dashboard: React.FC = () => {
           </Box>
         </Box>
       </SlideUp>
-      
+
       <Divider sx={{ my: 4 }} />
-      
+
       <SlideUp delay={0.3}>
         <Box sx={{ mb: 4 }}>
           <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>INCOME VS EXPENSES</Typography>

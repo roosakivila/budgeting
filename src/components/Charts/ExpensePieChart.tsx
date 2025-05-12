@@ -42,7 +42,7 @@ const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses }) => {
                     fontSize={12}
                     label={({ name, value }) => `${name}: ${value}`}
                 >
-                    {categoryTotals.map((entry, index) => (
+                    {categoryTotals.map((_entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
